@@ -1,5 +1,3 @@
-""""""""""""""""""""""""""""""""""""" =>
-" Allan MacGregor Vimrc configuration """"""""""""""""""""""""""""""""""""" ==>
 "set maxmempattern=5000 set nocompatible
 set nocompatible
 filetype plugin on
@@ -15,13 +13,6 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.config/nvim/bundle/Vundle.vim
 call vundle#begin()
-"call plug#begin('~/.config/nvim/plugged')
-"call plug#begin('~/.vim/plugged')
-
-"Plugin 'ervandew/supertab'
-" let Vundle manage Vundle, required
-"Plugin 'VundleVim/Vundle.vim'
-
 " Utility
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'preservim/nerdtree'
@@ -40,7 +31,7 @@ Plugin 'gilsondev/searchtasks.vim'
 Plugin 'roxma/nvim-yarp'
 Plugin 'roxma/vim-hug-neovim-rpc'
 Plugin 'tpope/vim-surround'
-Plugin 'Shougo/deoplete.nvim'
+"Plugin 'Shougo/deoplete.nvim'
 Plugin 'tpope/vim-dispatch'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'mattn/emmet-vim'
@@ -108,7 +99,6 @@ Plugin 'arcticicestudio/nord-vim'
 Plugin 'ngmy/vim-rubocop'
 
 " A Check syntax in Vim asynchronously and fix files, with Language Server Protocol (LSP) support
-"Plugin 'dense-analysis/ale'
 
 
 Plugin 'Shougo/neosnippet.vim'
@@ -123,22 +113,6 @@ Plugin 'tpope/vim-rbenv'
 Plugin 'tpope/vim-bundler'
 
 "Language server
-"Plugin 'autozimu/LanguageClient-neovim', {
-    "\ 'branch': 'next',
-    "\ 'do': 'bash install.sh',
-    "\ }
-
-"Vim Instellisence
-"version 1
-"Plugin 'neovim/nvim-lspconfig'
-"Plugin 'hrsh7th/nvim-compe'
-"Plugin 'hrsh7th/vim-vsnip'
-"Plugin 'kabouzeid/nvim-lspinstall'
-"Plugin 'folke/lsp-colors.nvim'
-" coba
-"Plugin 'nvim-lua/completion-nvim'
-"version 2
-"Plugin 'kabouzeid/nvim-lspinstall'
 Plugin 'williamboman/nvim-lsp-installer'
 Plugin 'neovim/nvim-lspconfig'
 Plugin 'hrsh7th/nvim-cmp'
@@ -149,10 +123,9 @@ Plugin 'hrsh7th/cmp-cmdline'
 Plugin 'ray-x/lsp_signature.nvim'
 Plugin 'hrsh7th/cmp-vsnip'
 Plugin 'hrsh7th/vim-vsnip'
-Plugin 'HallerPatrick/py_lsp.nvim'
-"Plugin 'saadparwaiz1/cmp_luasnip'
-"Plugin 'L3MON4D3/LuaSnip'
-"Plugin 'hrsh7th/vim-vsnip'
+Plugin 'hrsh7th/vim-vsnip-integ'
+Plugin 'nvim-lua/completion-nvim'
+Plugin 'lithammer/nvim-pylance'
 
 
 " OSX stupid backspace fix
@@ -241,9 +214,6 @@ let g:hybrid_custom_term_colors = 1
 let g:hybrid_reduced_contrast = 1 
 
 
-" Neomake settings
-"autocmd! BufWritePost * Neomake
-
 " Vim-PDV Configuration 
 let g:pdv_template_dir = $HOME ."/.config/nvim/bundle/pdv/templates_snip"
 
@@ -330,13 +300,6 @@ let g:fzf_action = {
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
 
-" Default fzf layout
-" - down / up / left / right
-"let g:fzf_layout = { 'down': '~40%' }
-
-" In Neovim, you can set up fzf window using a Vim command
-"let g:fzf_layout = { 'window': 'enew' }
-"let g:fzf_layout = { 'window': '-tabnew' }
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 let $FZF_DEFAULT_OPTS='--reverse'
 nnoremap <Leader>gb :GBranches<CR>
@@ -396,7 +359,6 @@ map <C-l> <C-W>l
 """"""""""""""""""""""""""""""""""""
 " Pencarian di current file
 "map <space> /
-map <C-space> ?
 map <silent> <leader><cr> :noh<cr>
 """"""""""""""""""""""""""""""""""""
 
@@ -413,17 +375,7 @@ nmap <leader>w :w!<cr>
 
 nmap <leader>fa :setlocal foldmethod=indent<cr>
 
-"map <C-m> :TagbarToggle<CR>
-
-" Omnicomplete Better Nav
-"inoremap <expr> <c-j> ("\<C-n>")
-"inoremap <expr> <c-k> ("\<C-p>")
-
-
 let g:indentLine_color_term = 239
-" Define dictionary.
-
-
 
 " Mapping selecting Mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
@@ -438,26 +390,7 @@ nnoremap <Leader>p :Files<CR>
 " save file
 nnoremap <space>w :w<CR>
 
-" Insert mode completion
-"imap <c-x><c-k> <plug>(fzf-complete-word)
-"imap <c-x><c-f> <plug>(fzf-complete-path)
-"imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-"imap <c-x><c-l> <plug>(fzf-complete-line)
-
-
-
-" Disable arrow movement, resize splits instead.
-"if get(g:, 'elite_mode')
-"    nnoremap <Up>    :resize +2<CR>
-"    nnoremap <Down>  :resize -2<CR>
-"    nnoremap <Left>  :vertical resize +2<CR>
-"    nnoremap <Right> :vertical resize -2<CR>
-"endif
-
 map <silent> <LocalLeader>ws :highlight clear ExtraWhitespace<CR>
-
-" Advanced customization using autoload functions
-"inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
 
 "multi cursor
 let g:multi_cursor_use_default_mapping=0
@@ -530,27 +463,16 @@ let g:NERDTreeGitStatusIndicatorMapCustom = {
 let g:indentLine_enabled = 1
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
-
-"let g:coc_node_path = "/usr/local/bin/node"
-"let g:coc_global_extensions = ['coc-solargraph', 'coc-diagnostic', 'coc-vimlsp']
-
-"inoremap <silent><expr> <TAB>
-      "\ pumvisible() ? "\<C-n>" :
-      "\ <SID>check_back_space() ? "\<TAB>" :
-      "\ coc#refresh()
-"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-"inoremap <silent><expr> <NUL> coc#refresh()
-
 let g:user_emmet_leader_key=','
 
 " Change mode
 inoremap jj <ESC>
+inoremap <C-space> <C-x><C-o>
 " nerd commenter
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
@@ -570,180 +492,29 @@ let g:vimrubocop_config = '/Users/muhrizkiakbar/Project/Performance-API/.rubocop
 let g:loaded_python_provider = 0
 let g:loaded_perl_provider = 0
 
-"let g:syntastic_ruby_rubocop_exec = '/home/muhrizkiakbar/.rvm/gems/ruby-2.6.3/bin /home/muhrizkiakbar/.rvm/gems/ruby-2.6.3/bin/rubocop'
-
-
-"let g:LanguageClient_serverCommands = {
-    "\ 'ruby': ['/Users/muhrizkiakbar/.rvm/gems/ruby-2.6.5/bin/solargraph'],
-    "\ }
-
-"let g:ale_disable_lsp  = 1
-
-""let g:ale_linters_explicit = 1
-""let g:ale_sign_column_always = 1
-
-"let g:ale_completion_enabled = 0
-
-"let g:ale_sign_error   = ''
-"let g:ale_sign_warning = ''
-
-"hi ALEErrorSign   ctermfg=196 guifg=#FF0000
-"hi ALEWarningSign ctermfg=214 guifg=#FFAF00
-"" hi clear ALEErrorSign
-"" hi clear ALEWarningSign
-
-"let g:ale_set_highlights = 1
-
-"let g:ale_echo_msg_error_str   = '❌'
-"let g:ale_echo_msg_warning_str = '⚠️'
-"let g:ale_echo_msg_format      = '[%linter%] %s [%severity%]'
-
-"let g:ale_fix_on_save = 0
-
-"let g:ale_lint_on_enter = 1
-
-"" ALE VirtualText
-"let g:ale_virtualtext_cursor          = 1
-"let g:ale_virtualtext_prefix          = '<== '
-"hi ALEVirtualTextError   ctermfg=160 guifg=#DC322F
-"hi ALEVirtualTextWarning ctermfg=244 guifg=#fff200
-
-"" Navigate between errors quickly
-"nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-"nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
 " COC VIM LSP
 let g:markdown_fenced_languages = [
       \ 'vim',
       \ 'help'
       \]
 
-
-"nmap <silent> [c <Plug>(coc-diagnostic-prev)
-"nmap <silent> ]c <Plug>(coc-diagnostic-next)
-
-"" Remap keys for gotos
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window
-"nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-" Syntastic Configuration
-"function! LinterStatus() abort
-  "let l:counts = ale#statusline#Count(bufnr(''))
-
-  "let l:all_errors = l:counts.error + l:counts.style_error
-  "let l:all_non_errors = l:counts.total - l:all_errors
-
-  "return l:counts.total == 0 ? '✨ all good ✨' : printf(
-        "\   '😞 %dW %dE',
-        "\   all_non_errors,
-        "\   all_errors
-        "\)
-"endfunction
-
-"set statusline=
-"set statusline+=%m
-"set statusline+=\ %f
-"set statusline+=%=
-"set statusline+=\ %{LinterStatus()}
-
-"let g:deoplete#enable_at_startup = 1
-
-"inoremap <silent><expr> <TAB>
-      "\ pumvisible() ? "\<C-n>" :
-      "\ <SID>check_back_space() ? "\<TAB>" :
-      "\ deoplete#mappings#manual_complete()
-"function! s:check_back_space() abort "{{{
-  "let col = col('.') - 1
-  "return !col || getline('.')[col - 1]  =~ '\s'
-"endfunction"}}}
-
-"let g:syntastic_always_populate_loc_list = 1
-"let g:syntastic_auto_loc_list = 1
-"let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_enable_elixir_checker = 1
-" let g:syntastic_elixir_checkers = ["elixir"]
-
-"Neosnippet
-"nnoremap <c-]> :CtrlPtjump<cr>
-"vnoremap <c-]> :CtrlPtjumpVisual<cr>
-"let g:ctrlp_tjump_shortener = ['/home/muhrizkiakbar/Project/.*/gems/', '.../']
-"let g:ctrlp_tjump_only_silent = 1
-"let g:ctrlp_tjump_skip_tag_name = 1
-
-
-"Language server
-"set hidden
-
-"let g:LanguageClient_serverCommands = {
-    "\ 'ruby': ['/Users/muhrizkiakbar/.rvm/gems/ruby-2.6.3/bin/solargraph', 'stdio'],
-    "\ }
-
-"function SetLSPShortcuts()
-  "nnoremap <leader>ld :call LanguageClient#textDocument_definition()<CR>
-  "nnoremap <leader>lr :call LanguageClient#textDocument_rename()<CR>
-  "nnoremap <leader>lf :call LanguageClient#textDocument_formatting()<CR>
-  "nnoremap <leader>lt :call LanguageClient#textDocument_typeDefinition()<CR>
-  "nnoremap <leader>lx :call LanguageClient#textDocument_references()<CR>
-  "nnoremap <leader>la :call LanguageClient_workspace_applyEdit()<CR>
-  "nnoremap <leader>lc :call LanguageClient#textDocument_completion()<CR>
-  "nnoremap <leader>lh :call LanguageClient#textDocument_hover()<CR>
-  "nnoremap <leader>ls :call LanguageClient_textDocument_documentSymbol()<CR>
-  "nnoremap <leader>lm :call LanguageClient_contextMenu()<CR>
-"endfunction()
-
-"augroup LSP
-  "autocmd!
-  "autocmd FileType rb call SetLSPShortcuts()
-"augroup END
-"
-  "diagnostic.checkCurrentLine": true,
-  "diagnostic.virtualText": true,
-  "diagnostic.virtualTextPrefix": true,
-  "diagnostic.errorSign": "✘",
-  "diagnostic.warningSign": "",
-  "diagnostic.infoSign": "",
-
-  "coc.preferences.diagnostic.virtualText": true
-"let g:ale_linters = {
-"\   'ruby': ['rubocop', 'sorbet'],
-"\}
-
-"let g:ale_fixers = {
-"\   'ruby': ['rubocop', 'sorbet','remove_trailing_lines', 'trim_whitespace'],
-"\}
-
-" You will need the latest version of Exuberant CTAGS @ http://ctags.sourceforge.net/
-" F8 - Generate ctags for your current directory and current RVM gemset
-"let g:ctagdirs = "!/usr/local/bin/ctags -R --c++-kinds=+p --fields=+iaS --extra=+q . ".$HOME."/.rvm/gems/".system("rvm current | tr -d '\n'")."/gems"
-"map <F8> :exe g:ctagdirs<CR>
-
-"" You can use Ctrl-] to jump to a function.... Ctrl-p will jump back
-"map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
-"map <C-/> :pop<CR>
-
-"inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-"map({ 'i', 's' }, '<Tab>', 'v:lua.tab_complete()', { expr = true, noremap = false })
-"map({ 'i', 's' }, '<S-Tab>', 'v:lua.s_tab_co
-
 set completeopt=menuone,noinsert,noselect
+set completeopt-=preview
+autocmd BufEnter * lua require('completion').on_attach()
 let g:completion_enable_auto_signature = 1
+autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+autocmd Filetype ruby setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 
 lua << EOF
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
+local completion = require('completion')
+local nvim_lsp = require('lspconfig')
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  --Enable completion triggered by <c-x><c-o>
+  completion.on_attach(client, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
@@ -769,98 +540,77 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
   buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
 
+  
+  -- Set some keybinds conditional on server capabilities
+  if client.resolved_capabilities.document_formatting then
+      buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+      buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  end
+
+  -- Set autocommands conditional on server_capabilities
+  if client.resolved_capabilities.document_highlight then
+      vim.api.nvim_exec([[
+      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
+      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
+      augroup lsp_document_highlight
+          autocmd!
+          autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+          autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+      ]], false)
+  end
+
+
+  vim.fn.sign_define("LspDiagnosticsSignError", {text = "✘", numhl = "LspDiagnosticsDefaultError"})
+  vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "⚠", numhl = "LspDiagnosticsDefaultWarning"})
+  vim.fn.sign_define("LspDiagnosticsSignHint", {text = "H", numhl = "LspDiagnosticsDefaultHint"})
+  vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "ⓘ", numhl = "LspDiagnosticsDefaultWarning", icon = "ⓘ", texthl = "LspDiagnosticsDefaultWarning"})
 end
 
- -- Setup nvim-cmp.
-  local cmp = require'cmp'
-
-  cmp.setup({
-    snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-      end,
-    },
-    mapping = {
-      ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<C-y>'] = cmp.config.disable, -- If you want o remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
-      ['<C-e>'] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    },
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' }, -- For vsnip users.
-      -- { name = 'luasnip' }, -- For luasnip users.
-      -- { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
-    }, {
-      { name = 'buffer' },
-    })
-  })
-
-  -- Use buffer source for `/`.
-  cmp.setup.cmdline('/', {
-    sources = {
-      { name = 'buffer' }
-    }
-  })
-
-  -- Use cmdline & path source for ':'.
-  cmp.setup.cmdline(':', {
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
-
--- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
-local nvim_lsp = require('lspconfig')
 -- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local servers = { "solargraph", "rust_analyzer", "gopls", "pylsp" }
+local servers = { "solargraph", "rust_analyzer", "pyright" }
+local tes_capabilities = vim.lsp.protocol.make_client_capabilities()
 --local servers = { "solargraph" }
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-local on_attach_vim = function(client)
-  require'completion'.on_attach(client)
-  require'diagnostic'.on_attach(client)
-end
+tes_capabilities.textDocument.completion.completionItem.snippetSupport = true
+--capabilities = require('cmp_nvim_lsp').update_capabilities(tes_capabilities)
+capabilities = tes_capabilities
 
 for _, lsp in ipairs(servers) do
-
-  if lsp == "gopls" then
-    nvim_lsp[lsp].setup {
-      cmd = {"gopls", "serve"},
-      on_attach = on_attach_vim,
-      filetypes = { "go", "gomod" },
+  if lsp == "pyright" then
+    local pylance = require('pylance')
+    pylance.setup()
+    nvim_lsp.pyright.setup {
+      on_attach = on_attach,
       settings = {
-        gopls = {
-          analyses = {
-            unusedparams = true,
-          },
-          staticcheck = true,
-        },
+        python = {
+          analysis = {
+            typeCheckingMode = "basic",
+            completeFunctionParens = true,
+          }
+        }
       }
     }
-  elseif lsp == "pylsp" then
-    nvim_lsp[lsp].setup {
-      capabilities = capabilities,
-      on_attach = on_attach_vim,
+  elseif lsp == "solargraph" then
+    local cmd = { 'solargraph', 'stdio' }
+    local util = require 'lspconfig.util'
+    nvim_lsp.solargraph.setup {
+      cmd = cmd,
+      settings = {
+        solargraph = {
+          diagnostics = true,
+        },
+      },
+      init_options = { formatting = true },
+      filetypes = { 'ruby' },
+      root_dir = util.root_pattern('Gemfile', '.git'),
     }
   else
     nvim_lsp[lsp].setup {
       capabilities = capabilities,
-      on_attach = on_attach_vim,
+      on_attach = on_attach,
     }
   end
 end
@@ -871,3 +621,8 @@ vim.fn.sign_define("LspDiagnosticsSignHint", {text = "H", numhl = "LspDiagnostic
 vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "ⓘ", numhl = "LspDiagnosticsDefaultWarning", icon = "ⓘ", texthl = "LspDiagnosticsDefaultWarning"})
 
 EOF
+
+let g:completion_enable_snippet = 'vim-vsnip'
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+let g:completion_enable_auto_popup = 1
