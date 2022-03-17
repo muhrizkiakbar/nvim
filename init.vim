@@ -125,6 +125,7 @@ Plugin 'saadparwaiz1/cmp_luasnip'
 Plugin 'L3MON4D3/LuaSnip'
 Plugin 'ray-x/lsp_signature.nvim'
 "Plugin 'hrsh7th/cmp-vsnip'
+Plugin 'onsails/lspkind-nvim'
 Plugin 'hrsh7th/vim-vsnip'
 Plugin 'hrsh7th/vim-vsnip-integ'
 Plugin 'nvim-lua/completion-nvim'
@@ -570,12 +571,105 @@ for _, lsp in ipairs(servers) do
   end
 end
 
+-- require('lspkind').init({
+--     -- DEPRECATED (use mode instead): enables text annotations
+--     --
+--     -- default: true
+--     -- with_text = true,
+-- 
+--     -- defines how annotations are shown
+--     -- default: symbol
+--     -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+--     mode = 'symbol_text',
+-- 
+--     -- default symbol map
+--     -- can be either 'default' (requires nerd-fonts font) or
+--     -- 'codicons' for codicon preset (requires vscode-codicons font)
+--     --
+--     -- default: 'default'
+--     preset = 'codicons',
+-- 
+--     -- override preset symbols
+--     --
+--     -- default: {}
+--     symbol_map = {
+--       Text = "",
+--       Method = "",
+--       Function = "",
+--       Constructor = "",
+--       Field = "ﰠ",
+--       Variable = "",
+--       Class = "ﴯ",
+--       Interface = "",
+--       Module = "",
+--       Property = "ﰠ",
+--       Unit = "塞",
+--       Value = "",
+--       Enum = "",
+--       Keyword = "",
+--       Snippet = "",
+--       Color = "",
+--       File = "",
+--       Reference = "",
+--       Folder = "",
+--       EnumMember = "",
+--       Constant = "",
+--       Struct = "פּ",
+--       Event = "",
+--       Operator = "",
+--       TypeParameter = ""
+--     },
+-- })
+
 -- luasnip setup
 local luasnip = require 'luasnip'
+local lspkind = require("lspkind")
+local types = require("cmp.types")
+local str = require("cmp.utils.str")
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
 cmp.setup {
+  completion = { border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }, scrollbar = "║" },
+	documentation = {
+		border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+		scrollbar = "║",
+	},
+	formatting = {
+		fields = {
+			cmp.ItemField.Kind,
+			cmp.ItemField.Abbr,
+			cmp.ItemField.Menu,
+		},
+		format = lspkind.cmp_format({
+			with_text = false,
+			before = function(entry, vim_item)
+				-- Get the full snippet (and only keep first line)
+				local word = entry:get_insert_text()
+				if entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet then
+					word = vim.lsp.util.parse_snippet(word)
+				end
+				word = str.oneline(word)
+
+				-- concatenates the string
+				-- local max = 50
+				-- if string.len(word) >= max then
+				-- 	local before = string.sub(word, 1, math.floor((max - 3) / 2))
+				-- 	word = before .. "..."
+				-- end
+
+				if
+					entry.completion_item.insertTextFormat == types.lsp.InsertTextFormat.Snippet
+					and string.sub(vim_item.abbr, -1, -1) == "~"
+				then
+					word = word .. "~"
+				end
+				vim_item.abbr = word
+
+				return vim_item
+			end,
+		}),
+	},
   snippet = {
     expand = function(args)
       require('luasnip').lsp_expand(args.body)
@@ -663,7 +757,6 @@ require("lsp-colors").setup({
   Information = "#bf0dd7",
   Hint = "#10B981"
 })
-  -- Information = "#0db9d7",
 
 EOF
 
