@@ -8,7 +8,7 @@ set encoding=utf8
 set noswapfile
 """" START Vundle Configuration 
 " Disable file type for vundle
-filetype off                  " required
+"filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.config/nvim/bundle/Vundle.vim
@@ -94,6 +94,7 @@ Plugin 'yggdroot/indentLine'
 Plugin 'rigellute/shades-of-purple.vim'
 Plugin 'NLKNguyen/papercolor-theme'
 Plugin 'arcticicestudio/nord-vim'
+Plugin 'sonph/onehalf', { 'rtp': 'vim' }
 
 " A The Vim RuboCop plugin runs RuboCop and displays the results in Vim
 Plugin 'ngmy/vim-rubocop'
@@ -120,12 +121,15 @@ Plugin 'hrsh7th/cmp-nvim-lsp'
 Plugin 'hrsh7th/cmp-buffer'
 Plugin 'hrsh7th/cmp-path'
 Plugin 'hrsh7th/cmp-cmdline'
+Plugin 'saadparwaiz1/cmp_luasnip'
+Plugin 'L3MON4D3/LuaSnip'
 Plugin 'ray-x/lsp_signature.nvim'
-Plugin 'hrsh7th/cmp-vsnip'
+"Plugin 'hrsh7th/cmp-vsnip'
 Plugin 'hrsh7th/vim-vsnip'
 Plugin 'hrsh7th/vim-vsnip-integ'
 Plugin 'nvim-lua/completion-nvim'
 Plugin 'lithammer/nvim-pylance'
+Plugin 'folke/lsp-colors.nvim'
 
 
 " OSX stupid backspace fix
@@ -190,7 +194,14 @@ if (has("termguicolors"))
   set termguicolors
 endif
 
-let base16colorspace=256  " Access colors present in 256 colorspace
+"onehalf
+"if exists('+termguicolors')
+  "let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  "let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  "set termguicolors
+"endif
+
+"let base16colorspace=256  " Access colors present in 256 colorspace
 "colorscheme spacegray
 "colorscheme shades_of_purple
 "colorscheme PaperColor
@@ -198,6 +209,12 @@ let base16colorspace=256  " Access colors present in 256 colorspace
 "colorscheme nord
 colorscheme dracula
 " colorscheme spacemacs-theme
+"colorscheme onehalfdark
+"colorscheme onehalflight
+hi DiagnosticError ctermbg=NONE ctermfg=NONE guibg=NONE guifg=#F24B42
+hi DiagnosticWarn ctermbg=NONE ctermfg=NONE guibg=NONE guifg=#F5B439
+hi DiagnosticInfo ctermbg=NONE ctermfg=NONE guibg=NONE guifg=#f1fa8c
+hi DiagnosticHint ctermbg=NONE ctermfg=NONE guibg=NONE guifg=#14BC85
 
 let g:spacegray_underline_search = 1
 let g:spacegray_italicize_comments = 1
@@ -210,8 +227,9 @@ let g:airline_powerline_fonts = 1
 "let g:airline_theme='papercolor'
 let g:airline_theme='dracula'
 "let g:airline_theme='nord'
-let g:hybrid_custom_term_colors = 1
-let g:hybrid_reduced_contrast = 1 
+"let g:airline_theme='onehalflight'
+"let g:hybrid_custom_term_colors = 1
+"let g:hybrid_reduced_contrast = 1 
 
 
 " Vim-PDV Configuration 
@@ -335,7 +353,7 @@ let g:magit_default_fold_level = 0
 """""""""""""""""""""""""""""""""""""
 " Mappings configurationn
 """""""""""""""""""""""""""""""""""""
-let mapleader = ","
+let mapleader = " "
 
 "map <leader>bd :Bclose<cr>
 map <leader>c :bd<CR>
@@ -498,85 +516,18 @@ let g:markdown_fenced_languages = [
       \ 'help'
       \]
 
-set completeopt=menuone,noinsert,noselect
-set completeopt-=preview
-autocmd BufEnter * lua require('completion').on_attach()
-let g:completion_enable_auto_signature = 1
-autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
-autocmd Filetype ruby setlocal omnifunc=v:lua.vim.lsp.omnifunc
-
 
 lua << EOF
--- Use an on_attach function to only map the following keys
+
+-- Add additional capabilities supported by nvim-cmp
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
 -- after the language server attaches to the current buffer
-local completion = require('completion')
 local nvim_lsp = require('lspconfig')
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-  completion.on_attach(client, bufnr)
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gK', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', 'tD', '<cmd>lua vim.lsp.buf.document_highlight()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts) 
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
-  
-  -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-      buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  elseif client.resolved_capabilities.document_range_formatting then
-      buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  end
-
-  -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-      vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceText cterm=bold ctermbg=red guibg=LightYellow
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=LightYellow
-      augroup lsp_document_highlight
-          autocmd!
-          autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-          autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-      ]], false)
-  end
-
-
-  vim.fn.sign_define("LspDiagnosticsSignError", {text = "✘", numhl = "LspDiagnosticsDefaultError"})
-  vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "⚠", numhl = "LspDiagnosticsDefaultWarning"})
-  vim.fn.sign_define("LspDiagnosticsSignHint", {text = "H", numhl = "LspDiagnosticsDefaultHint"})
-  vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "ⓘ", numhl = "LspDiagnosticsDefaultWarning", icon = "ⓘ", texthl = "LspDiagnosticsDefaultWarning"})
-end
-
--- map buffer local keybindings when the language server attaches
--- Setup lspconfig.
+-- Enable some language servers with the additional completion capabilities offered by nvim-cmp
 local servers = { "solargraph", "rust_analyzer", "pyright" }
-local tes_capabilities = vim.lsp.protocol.make_client_capabilities()
---local servers = { "solargraph" }
-tes_capabilities.textDocument.completion.completionItem.snippetSupport = true
---capabilities = require('cmp_nvim_lsp').update_capabilities(tes_capabilities)
-capabilities = tes_capabilities
 
 for _, lsp in ipairs(servers) do
   if lsp == "pyright" then
@@ -601,11 +552,15 @@ for _, lsp in ipairs(servers) do
       settings = {
         solargraph = {
           diagnostics = true,
+          syntax = { enabled = true }
         },
       },
       init_options = { formatting = true },
       filetypes = { 'ruby' },
       root_dir = util.root_pattern('Gemfile', '.git'),
+        flags = {
+        debounce_text_changes = 150,
+      }
     }
   else
     nvim_lsp[lsp].setup {
@@ -615,14 +570,104 @@ for _, lsp in ipairs(servers) do
   end
 end
 
-vim.fn.sign_define("LspDiagnosticsSignError", {text = "✘", numhl = "LspDiagnosticsDefaultError"})
-vim.fn.sign_define("LspDiagnosticsSignWarning", {text = "⚠", numhl = "LspDiagnosticsDefaultWarning"})
-vim.fn.sign_define("LspDiagnosticsSignHint", {text = "H", numhl = "LspDiagnosticsDefaultHint"})
-vim.fn.sign_define("LspDiagnosticsSignInformation", {text = "ⓘ", numhl = "LspDiagnosticsDefaultWarning", icon = "ⓘ", texthl = "LspDiagnosticsDefaultWarning"})
+-- luasnip setup
+local luasnip = require 'luasnip'
+
+-- nvim-cmp setup
+local cmp = require 'cmp'
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end,
+    ['<S-Tab>'] = function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end,
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' },
+  },
+}
+
+local signs = {
+ { name = "DiagnosticSignError", text = "", color = "#eb4034" },
+ { name = "DiagnosticSignWarn", text = "", color = "#ebc034" },
+ { name = "DiagnosticSignHint", text = "", color = "#25d2db" },
+ { name = "DiagnosticSignInfo", text = "", color = "#db4b4b" },
+}
+
+for _, sign in ipairs(signs) do
+  vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = "", guifg = sign.color, ctermfg = sign.color })
+end
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- Enable underline, use default values
+    underline = true,
+    -- Enable virtual text, override spacing to 4
+    virtual_text = {
+      spacing = 2,
+      prefix = ' ',
+    },
+    -- Use a function to dynamically turn signs off
+    -- and on, using buffer local variables
+    signs = {
+      active = signs,
+    },
+    update_in_insert = false,
+    float = {
+      focus = false,
+      focusable = false,
+      style = "minimal",
+      border = "rounded",
+      source = "always",
+      header = "",
+      prefix = "",
+    },
+  }
+)
+
+
+
+require("lsp-colors").setup({
+  Error = "#db4b4b",
+  Warning = "#e0af68",
+  Information = "#bf0dd7",
+  Hint = "#10B981"
+})
+  -- Information = "#0db9d7",
 
 EOF
 
-let g:completion_enable_snippet = 'vim-vsnip'
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 let g:completion_enable_auto_popup = 1
+"inoremap <C-space> <C-x><C-o>
+set tags+=.tags
+nnoremap <leader>ct :silent ! ctags -R --languages=ruby --exclude=.git --exclude=log -f .tags<cr>
