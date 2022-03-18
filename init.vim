@@ -571,56 +571,6 @@ for _, lsp in ipairs(servers) do
   end
 end
 
--- require('lspkind').init({
---     -- DEPRECATED (use mode instead): enables text annotations
---     --
---     -- default: true
---     -- with_text = true,
--- 
---     -- defines how annotations are shown
---     -- default: symbol
---     -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
---     mode = 'symbol_text',
--- 
---     -- default symbol map
---     -- can be either 'default' (requires nerd-fonts font) or
---     -- 'codicons' for codicon preset (requires vscode-codicons font)
---     --
---     -- default: 'default'
---     preset = 'codicons',
--- 
---     -- override preset symbols
---     --
---     -- default: {}
---     symbol_map = {
---       Text = "",
---       Method = "",
---       Function = "",
---       Constructor = "",
---       Field = "ﰠ",
---       Variable = "",
---       Class = "ﴯ",
---       Interface = "",
---       Module = "",
---       Property = "ﰠ",
---       Unit = "塞",
---       Value = "",
---       Enum = "",
---       Keyword = "",
---       Snippet = "",
---       Color = "",
---       File = "",
---       Reference = "",
---       Folder = "",
---       EnumMember = "",
---       Constant = "",
---       Struct = "פּ",
---       Event = "",
---       Operator = "",
---       TypeParameter = ""
---     },
--- })
-
 -- luasnip setup
 local luasnip = require 'luasnip'
 local lspkind = require("lspkind")
@@ -763,4 +713,15 @@ EOF
 let g:completion_enable_auto_popup = 1
 "inoremap <C-space> <C-x><C-o>
 set tags+=.tags
-nnoremap <leader>ct :silent ! ctags -R --languages=ruby --exclude=.git --exclude=log -f .tags<cr>
+"nnoremap <leader>gt :silent ! ctags -R --languages=ruby --exclude=.git --exclude=log -f .tags<cr>
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm: modules',
+        \ 'c:ﴯ classes',
+        \ 'd: describes',
+        \ 'C: contexts',
+        \ 'f: methods',
+        \ 'F: singleton methods'
+    \ ]
+\ }
+nmap <leader>n :TagbarToggle<CR>
