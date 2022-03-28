@@ -506,7 +506,6 @@ let g:surround_61 = "<%= \r %>"
 nmap <leader>y ysiW=<cr> 
 nmap <leader>u ysiW-<cr> 
 
-"let g:vimrubocop_config = '/Users/muhrizkiakbar/.config/nvim/.rubocop_todo.yml'
 let g:vimrubocop_config = '/Users/muhrizkiakbar/Project/Performance-API/.rubocop.yml'
 let g:loaded_python_provider = 0
 let g:loaded_perl_provider = 0
@@ -528,7 +527,7 @@ capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 local nvim_lsp = require('lspconfig')
 
 -- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { "solargraph", "rust_analyzer", "pyright" }
+local servers = { "solargraph", "rust_analyzer", "pyright", "gopls" }
 
 for _, lsp in ipairs(servers) do
   if lsp == "pyright" then
@@ -562,6 +561,19 @@ for _, lsp in ipairs(servers) do
         flags = {
         debounce_text_changes = 150,
       }
+    }
+  elseif lsp == "gopls" then
+    local cmd = { "gopls" }
+    local util = require 'lspconfig.util'
+    nvim_lsp.gopls.setup {
+      cmd = cmd,
+      init_options = { formatting = true },
+      filetypes = { "go", "gomod", "gotmpl" },
+      root_dir = util.root_pattern('go.mod', '.git'),
+        flags = {
+        debounce_text_changes = 150,
+      },
+      single_file_support = true
     }
   else
     nvim_lsp[lsp].setup {
@@ -712,7 +724,7 @@ EOF
 
 let g:completion_enable_auto_popup = 1
 "inoremap <C-space> <C-x><C-o>
-set tags+=.tags
+set tags+=.tags,gems.tag
 "nnoremap <leader>gt :silent ! ctags -R --languages=ruby --exclude=.git --exclude=log -f .tags<cr>
 let g:tagbar_type_ruby = {
     \ 'kinds' : [
@@ -725,3 +737,4 @@ let g:tagbar_type_ruby = {
     \ ]
 \ }
 nmap <leader>n :TagbarToggle<CR>
+nnoremap <leader>. :CtrlPTag<cr>
